@@ -5,7 +5,7 @@ const port = process.env.PORT || 4000;
 
 const days = require('./data');
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   const date = new Date();
 
   const output = days.map((day) => {
