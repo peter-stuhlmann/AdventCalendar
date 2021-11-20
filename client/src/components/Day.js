@@ -5,6 +5,11 @@ export default function DayComponent(props) {
   const { day } = props;
 
   const [wiggle, setWiggle] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const runOpen = () => {
+    setOpen(true);
+  };
 
   const runWiggle = () => {
     setWiggle(true);
@@ -15,12 +20,12 @@ export default function DayComponent(props) {
   };
 
   const handleDayOpener = (day) => {
-    day.allowed ? console.log(day.day) : runWiggle();
+    day.allowed ? runOpen() : runWiggle();
   };
 
   return (
-    <Day onClick={() => handleDayOpener(day)} wiggle={wiggle}>
-      <Number>{day.day}</Number>
+    <Day onClick={() => handleDayOpener(day)} wiggle={wiggle} open={open}>
+      <Number open={open}>{day.day}</Number>
     </Day>
   );
 }
@@ -80,6 +85,11 @@ const Day = styled.div`
         }
       }
     `}
+
+  ${(props) =>
+    props.open &&
+    ` transform: rotateY(180deg);
+    `}
 `;
 
 const Number = styled.div`
@@ -91,6 +101,8 @@ const Number = styled.div`
   width: clamp(50px, 9vmin, 70px);
   height: clamp(50px, 9vmin, 70px);
   display: flex;
+  opacity: ${(props) => (props.open ? '0' : '1')};
+  transition: opacity 0.15s;
   align-items: center;
   justify-content: center;
 `;
