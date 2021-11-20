@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 export default function DayComponent(props) {
   const { day } = props;
 
+  const [wiggle, setWiggle] = useState(false);
+
+  const runWiggle = () => {
+    setWiggle(true);
+
+    setTimeout(() => {
+      setWiggle(false);
+    }, 300);
+  };
+
+  const handleDayOpener = (day) => {
+    day.allowed ? console.log(day.day) : runWiggle();
+  };
+
   return (
-    <Day>
+    <Day onClick={() => handleDayOpener(day)} wiggle={wiggle}>
       <Number>{day.day}</Number>
     </Day>
   );
@@ -40,10 +54,36 @@ const Day = styled.div`
   &:hover {
     box-shadow: 0px 0px 13px 4px #000;
   }
+
+  ${(props) =>
+    props.wiggle &&
+    ` animation: wiggle 50ms infinite;
+  
+      @keyframes wiggle {
+        0% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        20% {
+          transform: translate(4px, 0) rotate(-2deg);
+        }
+        40% {
+          transform: translate(-8px, 0) rotate(5deg);
+        }
+        60% {
+          transform: translate(8px, 0) rotate(-5deg);
+        }
+        80% {
+          transform: translate(-4px, 0) rotate(2deg);
+        }
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+      }
+    `}
 `;
 
 const Number = styled.div`
-  font-family: 'Praise', serif;
+  font-family: Praise, serif;
   color: #fff;
   font-size: clamp(2rem, 7vmin, 3rem);
   background-color: rgba(0, 0, 0, 0.3);
