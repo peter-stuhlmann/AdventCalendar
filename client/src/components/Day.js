@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import useLocalStorage from '../hooks/useLocalStorage';
+
 export default function DayComponent(props) {
-  const { day } = props;
+  const { day, defaultImage } = props;
+
+  const [storage, setStorage] = useLocalStorage(`Day ${day.day}`, false);
 
   const [wiggle, setWiggle] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(day.allowed && storage);
 
   const runOpen = () => {
     setOpen(true);
+    setStorage(true);
   };
 
   const runWiggle = () => {
+    setStorage(false);
     setWiggle(true);
 
     setTimeout(() => {
@@ -24,7 +30,13 @@ export default function DayComponent(props) {
   };
 
   return (
-    <Day onClick={() => handleDayOpener(day)} wiggle={wiggle} open={open}>
+    <Day
+      onClick={() => handleDayOpener(day)}
+      wiggle={wiggle}
+      open={open}
+      img={day.img}
+      defaultImage={defaultImage}
+    >
       <Number open={open}>{day.day}</Number>
     </Day>
   );
@@ -42,6 +54,10 @@ const Day = styled.div`
   align-items: flex-end;
   justify-content: flex-end;
   transition: 0.15s;
+  background-image: url(${(props) =>
+    !props.open ? props.defaultImage : props.img});
+  background-position: center;
+  background-size: cover;
 
   @media (max-width: 1100px) {
     flex: 0 0 calc(100% / 4 - 20px);
@@ -53,12 +69,11 @@ const Day = styled.div`
     border: 2px solid #fff;
   }
 
-  @media (max-width: 400px) {
-  }
-
-  &:hover {
-    box-shadow: 0px 0px 13px 4px #000;
-  }
+  ${(props) =>
+    !props.open &&
+    ` &:hover {
+        box-shadow: 0px 0px 13px 4px #000;
+    `}
 
   ${(props) =>
     props.wiggle &&

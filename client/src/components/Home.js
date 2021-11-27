@@ -20,7 +20,10 @@ export default function Home() {
 
   return (
     <Layout>
-      {data && data.map((day) => <Day key={day.day} day={day} />)}
+      {data &&
+        data.days.map((day) => (
+          <Day key={day.day} day={day} defaultImage={data.defaultImage} />
+        ))}
     </Layout>
   );
 }
