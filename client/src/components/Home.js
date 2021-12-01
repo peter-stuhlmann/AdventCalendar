@@ -40,6 +40,6 @@ const Layout = styled.div`
   background-size: cover;
 
   @media (max-width: 580px) {
-    padding: 10px;
+    padding: 3px;
   }
 `;

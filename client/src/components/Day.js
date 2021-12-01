@@ -64,8 +64,8 @@ const Day = styled.div`
   }
 
   @media (max-width: 580px) {
-    flex: 0 0 calc(100% / 3 - 10px);
-    margin: 5px;
+    flex: 0 0 calc(100% / 3 - 6px);
+    margin: 3px;
     border: 2px solid #fff;
   }
 
